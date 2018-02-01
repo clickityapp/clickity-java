@@ -7,14 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
-
+import java.util.stream.Stream;
 import javax.mail.MessagingException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mailosaur.models.Attachment;
+import com.mailosaur.models.MessageHeader;
 import com.mailosaur.models.Message;
+import com.mailosaur.models.MessageSummary;
 import com.mailosaur.models.SearchCriteria;
 import com.mailosaur.models.SpamAssassinRule;
 import com.mailosaur.models.SpamCheckResult;
@@ -22,7 +24,7 @@ import com.mailosaur.models.SpamCheckResult;
 public class EmailsTest {
 	private static MailosaurClient client;
 	private static String server;
-	private static List<Message> emails;
+	private static List<MessageSummary> emails;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private String isoDateString = dateFormat.format(Calendar.getInstance().getTime());
 	
@@ -42,24 +44,24 @@ public class EmailsTest {
         
         Mailer.sendEmails(client, server, 5);
         
-        emails = client.messages().list(server);
+        emails = client.messages().list(server).items();
 	}
 
     @Test
 	public void testList() throws IOException {
     	assertEquals(5, emails.size());
     	
-    	for (Message email : emails) {
+    	for (MessageSummary email : emails) {
     		validateEmailSummary(email);
     	}
     }
     
     @Test
     public void testGet() throws IOException {
-    	Message emailToRetrieve = emails.get(0);
+    	MessageSummary emailToRetrieve = emails.get(0);
     	Message email = client.messages().get(emailToRetrieve.id());
     	validateEmail(email);
-    	validateHeaders(emailToRetrieve, email);
+    	validateHeaders(email);
     }
     
     @Test
@@ -94,12 +96,12 @@ public class EmailsTest {
     
     @Test
     public void testSearchBySentTo() throws IOException {
-    	Message targetEmail = emails.get(1);
+    	MessageSummary targetEmail = emails.get(1);
     	SearchCriteria criteria = new SearchCriteria();
-    	criteria.withSentTo(targetEmail.to().get(0).address());
-    	List<Message> results = client.messages().search(server, criteria);
+    	criteria.withSentTo(targetEmail.to().get(0).email());
+    	List<MessageSummary> results = client.messages().search(server, criteria).items();
     	assertEquals(1, results.size());
-    	assertEquals(targetEmail.to().get(0).address(), results.get(0).to().get(0).address());
+    	assertEquals(targetEmail.to().get(0).email(), results.get(0).to().get(0).email());
     	assertEquals(targetEmail.subject(), results.get(0).subject());
     }
     
@@ -115,25 +117,25 @@ public class EmailsTest {
     
     @Test
     public void testSearchByBody() throws IOException {
-    	Message targetEmail = emails.get(1);
+    	MessageSummary targetEmail = emails.get(1);
     	String uniqueString = targetEmail.subject().substring(0, targetEmail.subject().indexOf(" subject"));
     	SearchCriteria criteria = new SearchCriteria();
     	criteria.withBody(uniqueString += " html");
-    	List<Message> results = client.messages().search(server, criteria);
+    	List<MessageSummary> results = client.messages().search(server, criteria).items();
     	assertEquals(1, results.size());
-    	assertEquals(targetEmail.to().get(0).address(), results.get(0).to().get(0).address());
+    	assertEquals(targetEmail.to().get(0).email(), results.get(0).to().get(0).email());
     	assertEquals(targetEmail.subject(), results.get(0).subject());
     }
     
     @Test
     public void testSearchBySubject() throws IOException {
-    	Message targetEmail = emails.get(1);
+    	MessageSummary targetEmail = emails.get(1);
     	String uniqueString = targetEmail.subject().substring(0, targetEmail.subject().indexOf(" subject"));
     	SearchCriteria criteria = new SearchCriteria();
     	criteria.withSubject(uniqueString);
-    	List<Message> results = client.messages().search(server, criteria);
+    	List<MessageSummary> results = client.messages().search(server, criteria).items();
     	assertEquals(1, results.size());
-    	assertEquals(targetEmail.to().get(0).address(), results.get(0).to().get(0).address());
+    	assertEquals(targetEmail.to().get(0).email(), results.get(0).to().get(0).email());
     	assertEquals(targetEmail.subject(), results.get(0).subject());
     }
     
@@ -164,14 +166,14 @@ public class EmailsTest {
     
     private void validateEmail(Message email) {
     	validateMetadata(email);
-    	validateAttachmentMetadata(email);
+    	validateAttachments(email);
     	validateHtml(email);
     	validateText(email);
     }
     
-    private void validateEmailSummary(Message email) {
-    	validateMetadata(email);
-    	validateAttachmentMetadata(email);
+    private void validateEmailSummary(MessageSummary email) {
+		validateMetadata(email);
+		assertEquals(2, (int)email.attachments());
     }
     
     private void validateHtml(Message email) {
@@ -202,47 +204,57 @@ public class EmailsTest {
 		assertEquals(email.text().links().get(0).href(), email.text().links().get(0).text());
 		assertEquals("https://mailosaur.com/", email.text().links().get(1).href());
 		assertEquals(email.text().links().get(1).href(), email.text().links().get(1).text());
-    }
+	}
     
-    private void validateHeaders(Message expected, Message actual) {
-    	String expectedFromHeader = String.format("%s <%s>", expected.from().get(0).name(), expected.from().get(0).address());
-    	String expectedToHeader = String.format("%s <%s>", expected.to().get(0).name(), expected.to().get(0).address());
-    	
-    	// Fallback casing for headers is used, as header casing is determined by sending server
-    	assertEquals(expectedFromHeader, (actual.headers().get("From") == null) ? actual.headers().get("from") : actual.headers().get("From"));
-    	assertEquals(expectedToHeader, (actual.headers().get("To") == null) ? actual.headers().get("to") : actual.headers().get("To"));
-		assertEquals(expected.subject(), (actual.headers().get("Subject") == null) ? actual.headers().get("subject") : actual.headers().get("Subject"));
-    }
+    private void validateHeaders(Message email) {
+    	String expectedFromHeader = String.format("%s <%s>", email.from().get(0).name(), email.from().get(0).email());
+		String expectedToHeader = String.format("%s <%s>", email.to().get(0).name(), email.to().get(0).email());
+		List<MessageHeader> headers = email.metadata().headers();
+		Stream<MessageHeader> fromHeader = headers.stream().filter(h -> h.field().toLowerCase().equals("from"));
+		Stream<MessageHeader> toHeader = headers.stream().filter(h -> h.field().toLowerCase().equals("to"));
+		Stream<MessageHeader> subjectHeader = headers.stream().filter(h -> h.field().toLowerCase().equals("subject"));
+		
+    	assertEquals(expectedFromHeader, fromHeader.findFirst().get());
+    	assertEquals(expectedToHeader, toHeader.findFirst().get());
+		assertEquals(email.subject(), subjectHeader.findFirst().get());
+	}
+	
+	private void validateMetadata(MessageSummary summary) {
+		Message email = new Message()
+			.withFrom(summary.from())
+			.withTo(summary.to())
+			.withSubject(summary.subject())
+			.withServer(summary.server());
+
+		validateMetadata(email);
+	}
     
     private void validateMetadata(Message email) {
     	assertEquals(1, email.from().size());
         assertEquals(1, email.to().size());
-        assertNotNull(email.from().get(0).address());
+        assertNotNull(email.from().get(0).email());
         assertNotNull(email.from().get(0).name());
-        assertNotNull(email.to().get(0).address());
+        assertNotNull(email.to().get(0).email());
         assertNotNull(email.to().get(0).name());
         assertNotNull(email.subject());
-        assertNotNull(email.senderhost());
         assertNotNull(email.server());
         
     	assertEquals(isoDateString, dateFormat.format(email.received().toDate()));
     }
     
-    private void validateAttachmentMetadata(Message email) {
+    private void validateAttachments(Message email) {
 		assertEquals(2, email.attachments().size());
 		
 		Attachment file1 = email.attachments().get(0);
 		assertNotNull(file1.id());
 		assertEquals((Long) 82138L, file1.length());
 		assertEquals("cat.png", file1.fileName());
-		assertEquals(isoDateString, dateFormat.format(file1.creationDate().toDate()));
 		assertEquals("image/png", file1.contentType());
 		
 		Attachment file2 = email.attachments().get(1);
 		assertNotNull(file2.id());
 		assertEquals((Long) 212080L, file2.length());
 		assertEquals("dog.png", file2.fileName());
-		assertEquals(isoDateString, dateFormat.format(file2.creationDate().toDate()));
 		assertEquals("image/png", file2.contentType());
 	}
 }

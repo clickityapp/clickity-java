@@ -22,19 +22,13 @@ public interface MailosaurBaseClient {
     /**
      * The default base URL.
      */
-    String DEFAULT_BASE_URL = "https://next.mailosaur.com";
+    String DEFAULT_BASE_URL = "https://mailosaur.com";
 
     /**
      * Gets the Analysis object to access its operations.
      * @return the Analysis object.
      */
     Analysis analysis();
-
-    /**
-     * Gets the Emails object to access its operations.
-     * @return the Emails object.
-     */
-    Emails emails();
 
     /**
      * Gets the Files object to access its operations.

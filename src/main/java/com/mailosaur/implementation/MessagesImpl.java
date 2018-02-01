@@ -11,13 +11,13 @@ import com.mailosaur.Messages;
 import com.google.common.reflect.TypeToken;
 import com.mailosaur.MailosaurException;
 import com.mailosaur.models.Message;
+import com.mailosaur.models.MessageListResult;
 import com.mailosaur.models.SearchCriteria;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -67,7 +67,7 @@ public class MessagesImpl implements Messages {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.mailosaur.Messages list" })
         @GET("api/messages")
-        Observable<Response<ResponseBody>> list(@Query("server") String server, @Query("pagenumber") Integer pagenumber, @Query("itemsperpage") Integer itemsperpage);
+        Observable<Response<ResponseBody>> list(@Query("server") String server, @Query("page") Integer page, @Query("itemsPerPage") Integer itemsPerPage);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.mailosaur.Messages deleteAll" })
         @HTTP(path = "api/messages", method = "DELETE", hasBody = true)
@@ -75,7 +75,7 @@ public class MessagesImpl implements Messages {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.mailosaur.Messages search" })
         @POST("api/messages/search")
-        Observable<Response<ResponseBody>> search(@Query("server") String server, @Body SearchCriteria criteria, @Query("pagenumber") Integer pagenumber, @Query("itemsperpage") Integer itemsperpage);
+        Observable<Response<ResponseBody>> search(@Query("server") String server, @Body SearchCriteria criteria, @Query("page") Integer page, @Query("itemsPerPage") Integer itemsPerPage);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.mailosaur.Messages waitFor" })
         @POST("api/messages/await")
@@ -244,9 +244,9 @@ public class MessagesImpl implements Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    public List<Message> list(String server) {
+    public MessageListResult list(String server) {
         return listWithServiceResponseAsync(server).toBlocking().single().body();
     }
 
@@ -259,7 +259,7 @@ public class MessagesImpl implements Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<Message>> listAsync(String server, final ServiceCallback<List<Message>> serviceCallback) {
+    public ServiceFuture<MessageListResult> listAsync(String server, final ServiceCallback<MessageListResult> serviceCallback) {
         return ServiceFuture.fromResponse(listWithServiceResponseAsync(server), serviceCallback);
     }
 
@@ -269,12 +269,12 @@ public class MessagesImpl implements Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<List<Message>> listAsync(String server) {
-        return listWithServiceResponseAsync(server).map(new Func1<ServiceResponse<List<Message>>, List<Message>>() {
+    public Observable<MessageListResult> listAsync(String server) {
+        return listWithServiceResponseAsync(server).map(new Func1<ServiceResponse<MessageListResult>, MessageListResult>() {
             @Override
-            public List<Message> call(ServiceResponse<List<Message>> response) {
+            public MessageListResult call(ServiceResponse<MessageListResult> response) {
                 return response.body();
             }
         });
@@ -286,20 +286,20 @@ public class MessagesImpl implements Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<ServiceResponse<List<Message>>> listWithServiceResponseAsync(String server) {
+    public Observable<ServiceResponse<MessageListResult>> listWithServiceResponseAsync(String server) {
         if (server == null) {
             throw new IllegalArgumentException("Parameter server is required and cannot be null.");
         }
-        final Integer pagenumber = null;
-        final Integer itemsperpage = null;
-        return service.list(server, pagenumber, itemsperpage)
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Message>>>>() {
+        final Integer page = null;
+        final Integer itemsPerPage = null;
+        return service.list(server, page, itemsPerPage)
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MessageListResult>>>() {
                 @Override
-                public Observable<ServiceResponse<List<Message>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MessageListResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<Message>> clientResponse = listDelegate(response);
+                        ServiceResponse<MessageListResult> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -313,15 +313,15 @@ public class MessagesImpl implements Messages {
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    public List<Message> list(String server, Integer pagenumber, Integer itemsperpage) {
-        return listWithServiceResponseAsync(server, pagenumber, itemsperpage).toBlocking().single().body();
+    public MessageListResult list(String server, Integer page, Integer itemsPerPage) {
+        return listWithServiceResponseAsync(server, page, itemsPerPage).toBlocking().single().body();
     }
 
     /**
@@ -329,14 +329,14 @@ public class MessagesImpl implements Messages {
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<Message>> listAsync(String server, Integer pagenumber, Integer itemsperpage, final ServiceCallback<List<Message>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(server, pagenumber, itemsperpage), serviceCallback);
+    public ServiceFuture<MessageListResult> listAsync(String server, Integer page, Integer itemsPerPage, final ServiceCallback<MessageListResult> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(server, page, itemsPerPage), serviceCallback);
     }
 
     /**
@@ -344,15 +344,15 @@ public class MessagesImpl implements Messages {
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<List<Message>> listAsync(String server, Integer pagenumber, Integer itemsperpage) {
-        return listWithServiceResponseAsync(server, pagenumber, itemsperpage).map(new Func1<ServiceResponse<List<Message>>, List<Message>>() {
+    public Observable<MessageListResult> listAsync(String server, Integer page, Integer itemsPerPage) {
+        return listWithServiceResponseAsync(server, page, itemsPerPage).map(new Func1<ServiceResponse<MessageListResult>, MessageListResult>() {
             @Override
-            public List<Message> call(ServiceResponse<List<Message>> response) {
+            public MessageListResult call(ServiceResponse<MessageListResult> response) {
                 return response.body();
             }
         });
@@ -363,21 +363,21 @@ public class MessagesImpl implements Messages {
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<ServiceResponse<List<Message>>> listWithServiceResponseAsync(String server, Integer pagenumber, Integer itemsperpage) {
+    public Observable<ServiceResponse<MessageListResult>> listWithServiceResponseAsync(String server, Integer page, Integer itemsPerPage) {
         if (server == null) {
             throw new IllegalArgumentException("Parameter server is required and cannot be null.");
         }
-        return service.list(server, pagenumber, itemsperpage)
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Message>>>>() {
+        return service.list(server, page, itemsPerPage)
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MessageListResult>>>() {
                 @Override
-                public Observable<ServiceResponse<List<Message>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MessageListResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<Message>> clientResponse = listDelegate(response);
+                        ServiceResponse<MessageListResult> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -386,9 +386,9 @@ public class MessagesImpl implements Messages {
             });
     }
 
-    private ServiceResponse<List<Message>> listDelegate(Response<ResponseBody> response) throws MailosaurException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Message>, MailosaurException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<Message>>() { }.getType())
+    private ServiceResponse<MessageListResult> listDelegate(Response<ResponseBody> response) throws MailosaurException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MessageListResult, MailosaurException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MessageListResult>() { }.getType())
                 .registerError(MailosaurException.class)
                 .build(response);
     }
@@ -478,9 +478,9 @@ public class MessagesImpl implements Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    public List<Message> search(String server, SearchCriteria criteria) {
+    public MessageListResult search(String server, SearchCriteria criteria) {
         return searchWithServiceResponseAsync(server, criteria).toBlocking().single().body();
     }
 
@@ -494,7 +494,7 @@ public class MessagesImpl implements Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<Message>> searchAsync(String server, SearchCriteria criteria, final ServiceCallback<List<Message>> serviceCallback) {
+    public ServiceFuture<MessageListResult> searchAsync(String server, SearchCriteria criteria, final ServiceCallback<MessageListResult> serviceCallback) {
         return ServiceFuture.fromResponse(searchWithServiceResponseAsync(server, criteria), serviceCallback);
     }
 
@@ -505,12 +505,12 @@ public class MessagesImpl implements Messages {
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<List<Message>> searchAsync(String server, SearchCriteria criteria) {
-        return searchWithServiceResponseAsync(server, criteria).map(new Func1<ServiceResponse<List<Message>>, List<Message>>() {
+    public Observable<MessageListResult> searchAsync(String server, SearchCriteria criteria) {
+        return searchWithServiceResponseAsync(server, criteria).map(new Func1<ServiceResponse<MessageListResult>, MessageListResult>() {
             @Override
-            public List<Message> call(ServiceResponse<List<Message>> response) {
+            public MessageListResult call(ServiceResponse<MessageListResult> response) {
                 return response.body();
             }
         });
@@ -523,9 +523,9 @@ public class MessagesImpl implements Messages {
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<ServiceResponse<List<Message>>> searchWithServiceResponseAsync(String server, SearchCriteria criteria) {
+    public Observable<ServiceResponse<MessageListResult>> searchWithServiceResponseAsync(String server, SearchCriteria criteria) {
         if (server == null) {
             throw new IllegalArgumentException("Parameter server is required and cannot be null.");
         }
@@ -533,14 +533,14 @@ public class MessagesImpl implements Messages {
             throw new IllegalArgumentException("Parameter criteria is required and cannot be null.");
         }
         Validator.validate(criteria);
-        final Integer pagenumber = null;
-        final Integer itemsperpage = null;
-        return service.search(server, criteria, pagenumber, itemsperpage)
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Message>>>>() {
+        final Integer page = null;
+        final Integer itemsPerPage = null;
+        return service.search(server, criteria, page, itemsPerPage)
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MessageListResult>>>() {
                 @Override
-                public Observable<ServiceResponse<List<Message>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MessageListResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<Message>> clientResponse = searchDelegate(response);
+                        ServiceResponse<MessageListResult> clientResponse = searchDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -555,15 +555,15 @@ public class MessagesImpl implements Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    public List<Message> search(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage) {
-        return searchWithServiceResponseAsync(server, criteria, pagenumber, itemsperpage).toBlocking().single().body();
+    public MessageListResult search(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage) {
+        return searchWithServiceResponseAsync(server, criteria, page, itemsPerPage).toBlocking().single().body();
     }
 
     /**
@@ -572,14 +572,14 @@ public class MessagesImpl implements Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<Message>> searchAsync(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage, final ServiceCallback<List<Message>> serviceCallback) {
-        return ServiceFuture.fromResponse(searchWithServiceResponseAsync(server, criteria, pagenumber, itemsperpage), serviceCallback);
+    public ServiceFuture<MessageListResult> searchAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage, final ServiceCallback<MessageListResult> serviceCallback) {
+        return ServiceFuture.fromResponse(searchWithServiceResponseAsync(server, criteria, page, itemsPerPage), serviceCallback);
     }
 
     /**
@@ -588,15 +588,15 @@ public class MessagesImpl implements Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<List<Message>> searchAsync(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage) {
-        return searchWithServiceResponseAsync(server, criteria, pagenumber, itemsperpage).map(new Func1<ServiceResponse<List<Message>>, List<Message>>() {
+    public Observable<MessageListResult> searchAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage) {
+        return searchWithServiceResponseAsync(server, criteria, page, itemsPerPage).map(new Func1<ServiceResponse<MessageListResult>, MessageListResult>() {
             @Override
-            public List<Message> call(ServiceResponse<List<Message>> response) {
+            public MessageListResult call(ServiceResponse<MessageListResult> response) {
                 return response.body();
             }
         });
@@ -608,12 +608,12 @@ public class MessagesImpl implements Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    public Observable<ServiceResponse<List<Message>>> searchWithServiceResponseAsync(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage) {
+    public Observable<ServiceResponse<MessageListResult>> searchWithServiceResponseAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage) {
         if (server == null) {
             throw new IllegalArgumentException("Parameter server is required and cannot be null.");
         }
@@ -621,12 +621,12 @@ public class MessagesImpl implements Messages {
             throw new IllegalArgumentException("Parameter criteria is required and cannot be null.");
         }
         Validator.validate(criteria);
-        return service.search(server, criteria, pagenumber, itemsperpage)
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Message>>>>() {
+        return service.search(server, criteria, page, itemsPerPage)
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MessageListResult>>>() {
                 @Override
-                public Observable<ServiceResponse<List<Message>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<MessageListResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<Message>> clientResponse = searchDelegate(response);
+                        ServiceResponse<MessageListResult> clientResponse = searchDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -635,9 +635,9 @@ public class MessagesImpl implements Messages {
             });
     }
 
-    private ServiceResponse<List<Message>> searchDelegate(Response<ResponseBody> response) throws MailosaurException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<Message>, MailosaurException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<Message>>() { }.getType())
+    private ServiceResponse<MessageListResult> searchDelegate(Response<ResponseBody> response) throws MailosaurException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MessageListResult, MailosaurException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MessageListResult>() { }.getType())
                 .registerError(MailosaurException.class)
                 .build(response);
     }

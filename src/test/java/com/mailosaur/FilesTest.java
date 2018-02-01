@@ -24,7 +24,7 @@ import com.mailosaur.models.SpamCheckResult;
 public class FilesTest {
 	private static MailosaurClient client;
 	private static String server;
-	private static List<Message> emails;
+	private static Message email;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private String isoDateString = dateFormat.format(Calendar.getInstance().getTime());
 	
@@ -33,6 +33,8 @@ public class FilesTest {
 		server = System.getenv("MAILOSAUR_SERVER");
 		String apiKey = System.getenv("MAILOSAUR_API_KEY");
 		String baseUrl = System.getenv("MAILOSAUR_BASE_URL");
+		String host = System.getenv("MAILOSAUR_SMTP_HOST");
+		host = (host == null) ? "mailosaur.io" : host;
 		
 		if (apiKey == null || server == null) {
 			throw new IOException("Missing necessary environment variables - refer to README.md");
@@ -41,16 +43,17 @@ public class FilesTest {
         client = new MailosaurClient(apiKey, baseUrl);
         
         client.messages().deleteAll(server);
-        
-        Mailer.sendEmails(client, server, 1);
-        
-        emails = client.messages().list(server);
+		
+		String testEmailAddress = String.format("files_test.%s@%s", server, host);
+		Mailer.sendEmail(client,  server, testEmailAddress);
+		
+		SearchCriteria criteria = new SearchCriteria();
+    	criteria.withSentTo(testEmailAddress);
+		email = client.messages().waitFor(server, criteria);
 	}
 
     @Test
 	public void testGetEmail() throws IOException {
-    	Message email = emails.get(0);
-    	
     	InputStream inputStream = client.files().getEmail(email.id());
     	
     	ByteArrayOutputStream baos = new ByteArrayOutputStream();				

@@ -42,7 +42,7 @@ public class Server {
      * The current count of emails held within the server.
      */
     @JsonProperty(value = "emails")
-    private Long emails;
+    private Integer emails;
 
     /**
      * The forwardingRules property.
@@ -135,7 +135,7 @@ public class Server {
      *
      * @return the emails value
      */
-    public Long emails() {
+    public Integer emails() {
         return this.emails;
     }
 
@@ -145,7 +145,7 @@ public class Server {
      * @param emails the emails value to set
      * @return the Server object itself.
      */
-    public Server withEmails(Long emails) {
+    public Server withEmails(Integer emails) {
         this.emails = emails;
         return this;
     }

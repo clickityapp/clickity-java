@@ -7,7 +7,6 @@
 package com.mailosaur.models;
 
 import java.util.UUID;
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -42,13 +41,7 @@ public class Attachment {
      * The length property.
      */
     @JsonProperty(value = "length")
-    private Long length;
-
-    /**
-     * The creationDate property.
-     */
-    @JsonProperty(value = "creationDate")
-    private DateTime creationDate;
+    private Integer length;
 
     /**
      * Get the id value.
@@ -135,7 +128,7 @@ public class Attachment {
      *
      * @return the length value
      */
-    public Long length() {
+    public Integer length() {
         return this.length;
     }
 
@@ -145,28 +138,8 @@ public class Attachment {
      * @param length the length value to set
      * @return the Attachment object itself.
      */
-    public Attachment withLength(Long length) {
+    public Attachment withLength(Integer length) {
         this.length = length;
-        return this;
-    }
-
-    /**
-     * Get the creationDate value.
-     *
-     * @return the creationDate value
-     */
-    public DateTime creationDate() {
-        return this.creationDate;
-    }
-
-    /**
-     * Set the creationDate value.
-     *
-     * @param creationDate the creationDate value to set
-     * @return the Attachment object itself.
-     */
-    public Attachment withCreationDate(DateTime creationDate) {
-        this.creationDate = creationDate;
         return this;
     }
 

@@ -8,12 +8,12 @@ package com.mailosaur;
 
 import com.mailosaur.MailosaurException;
 import com.mailosaur.models.Message;
+import com.mailosaur.models.MessageListResult;
 import com.mailosaur.models.SearchCriteria;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 import rx.Observable;
 
@@ -115,9 +115,9 @@ public interface Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    List<Message> list(String server);
+    MessageListResult list(String server);
 
     /**
      * List all messages.
@@ -128,7 +128,7 @@ public interface Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Message>> listAsync(String server, final ServiceCallback<List<Message>> serviceCallback);
+    ServiceFuture<MessageListResult> listAsync(String server, final ServiceCallback<MessageListResult> serviceCallback);
 
     /**
      * List all messages.
@@ -136,9 +136,9 @@ public interface Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<List<Message>> listAsync(String server);
+    Observable<MessageListResult> listAsync(String server);
 
     /**
      * List all messages.
@@ -146,59 +146,59 @@ public interface Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<ServiceResponse<List<Message>>> listWithServiceResponseAsync(String server);
+    Observable<ServiceResponse<MessageListResult>> listWithServiceResponseAsync(String server);
     /**
      * List all messages.
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    List<Message> list(String server, Integer pagenumber, Integer itemsperpage);
+    MessageListResult list(String server, Integer page, Integer itemsPerPage);
 
     /**
      * List all messages.
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Message>> listAsync(String server, Integer pagenumber, Integer itemsperpage, final ServiceCallback<List<Message>> serviceCallback);
+    ServiceFuture<MessageListResult> listAsync(String server, Integer page, Integer itemsPerPage, final ServiceCallback<MessageListResult> serviceCallback);
 
     /**
      * List all messages.
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<List<Message>> listAsync(String server, Integer pagenumber, Integer itemsperpage);
+    Observable<MessageListResult> listAsync(String server, Integer page, Integer itemsPerPage);
 
     /**
      * List all messages.
      * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<ServiceResponse<List<Message>>> listWithServiceResponseAsync(String server, Integer pagenumber, Integer itemsperpage);
+    Observable<ServiceResponse<MessageListResult>> listWithServiceResponseAsync(String server, Integer page, Integer itemsPerPage);
 
     /**
      * Delete all messages.
@@ -251,9 +251,9 @@ public interface Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    List<Message> search(String server, SearchCriteria criteria);
+    MessageListResult search(String server, SearchCriteria criteria);
 
     /**
      * Search for messages.
@@ -265,7 +265,7 @@ public interface Messages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Message>> searchAsync(String server, SearchCriteria criteria, final ServiceCallback<List<Message>> serviceCallback);
+    ServiceFuture<MessageListResult> searchAsync(String server, SearchCriteria criteria, final ServiceCallback<MessageListResult> serviceCallback);
 
     /**
      * Search for messages.
@@ -274,9 +274,9 @@ public interface Messages {
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<List<Message>> searchAsync(String server, SearchCriteria criteria);
+    Observable<MessageListResult> searchAsync(String server, SearchCriteria criteria);
 
     /**
      * Search for messages.
@@ -285,23 +285,23 @@ public interface Messages {
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<ServiceResponse<List<Message>>> searchWithServiceResponseAsync(String server, SearchCriteria criteria);
+    Observable<ServiceResponse<MessageListResult>> searchWithServiceResponseAsync(String server, SearchCriteria criteria);
     /**
      * Search for messages.
      * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;Message&gt; object if successful.
+     * @return the MessageListResult object if successful.
      */
-    List<Message> search(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage);
+    MessageListResult search(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage);
 
     /**
      * Search for messages.
@@ -309,13 +309,13 @@ public interface Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Message>> searchAsync(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage, final ServiceCallback<List<Message>> serviceCallback);
+    ServiceFuture<MessageListResult> searchAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage, final ServiceCallback<MessageListResult> serviceCallback);
 
     /**
      * Search for messages.
@@ -323,12 +323,12 @@ public interface Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<List<Message>> searchAsync(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage);
+    Observable<MessageListResult> searchAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage);
 
     /**
      * Search for messages.
@@ -336,12 +336,12 @@ public interface Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @param pagenumber Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsperpage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
+     * @param page Used in conjunction with `itemsperpage` to support pagination.
+     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Message&gt; object
+     * @return the observable to the MessageListResult object
      */
-    Observable<ServiceResponse<List<Message>>> searchWithServiceResponseAsync(String server, SearchCriteria criteria, Integer pagenumber, Integer itemsperpage);
+    Observable<ServiceResponse<MessageListResult>> searchWithServiceResponseAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage);
 
     /**
      * Wait for a specific message.

@@ -12,13 +12,13 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Message model.
+ * The MessageSummary model.
  */
-public class Message {
+public class MessageSummary {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private UUID id;
 
     /**
@@ -70,28 +70,16 @@ public class Message {
     private String subject;
 
     /**
-     * The html property.
+     * The summary property.
      */
-    @JsonProperty(value = "html")
-    private MessageContent html;
-
-    /**
-     * The text property.
-     */
-    @JsonProperty(value = "text")
-    private MessageContent text;
+    @JsonProperty(value = "summary")
+    private String summary;
 
     /**
      * The attachments property.
      */
     @JsonProperty(value = "attachments")
-    private List<Attachment> attachments;
-
-    /**
-     * The metadata property.
-     */
-    @JsonProperty(value = "metadata")
-    private Metadata metadata;
+    private Integer attachments;
 
     /**
      * Get the id value.
@@ -106,9 +94,9 @@ public class Message {
      * Set the id value.
      *
      * @param id the id value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withId(UUID id) {
+    public MessageSummary withId(UUID id) {
         this.id = id;
         return this;
     }
@@ -126,9 +114,9 @@ public class Message {
      * Set the server value.
      *
      * @param server the server value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withServer(String server) {
+    public MessageSummary withServer(String server) {
         this.server = server;
         return this;
     }
@@ -146,9 +134,9 @@ public class Message {
      * Set the rcpt value.
      *
      * @param rcpt the rcpt value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withRcpt(List<MessageAddress> rcpt) {
+    public MessageSummary withRcpt(List<MessageAddress> rcpt) {
         this.rcpt = rcpt;
         return this;
     }
@@ -166,9 +154,9 @@ public class Message {
      * Set the from value.
      *
      * @param from the from value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withFrom(List<MessageAddress> from) {
+    public MessageSummary withFrom(List<MessageAddress> from) {
         this.from = from;
         return this;
     }
@@ -186,9 +174,9 @@ public class Message {
      * Set the to value.
      *
      * @param to the to value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withTo(List<MessageAddress> to) {
+    public MessageSummary withTo(List<MessageAddress> to) {
         this.to = to;
         return this;
     }
@@ -206,9 +194,9 @@ public class Message {
      * Set the cc value.
      *
      * @param cc the cc value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withCc(List<MessageAddress> cc) {
+    public MessageSummary withCc(List<MessageAddress> cc) {
         this.cc = cc;
         return this;
     }
@@ -226,9 +214,9 @@ public class Message {
      * Set the bcc value.
      *
      * @param bcc the bcc value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withBcc(List<MessageAddress> bcc) {
+    public MessageSummary withBcc(List<MessageAddress> bcc) {
         this.bcc = bcc;
         return this;
     }
@@ -246,9 +234,9 @@ public class Message {
      * Set the received value.
      *
      * @param received the received value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withReceived(DateTime received) {
+    public MessageSummary withReceived(DateTime received) {
         this.received = received;
         return this;
     }
@@ -266,50 +254,30 @@ public class Message {
      * Set the subject value.
      *
      * @param subject the subject value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withSubject(String subject) {
+    public MessageSummary withSubject(String subject) {
         this.subject = subject;
         return this;
     }
 
     /**
-     * Get the html value.
+     * Get the summary value.
      *
-     * @return the html value
+     * @return the summary value
      */
-    public MessageContent html() {
-        return this.html;
+    public String summary() {
+        return this.summary;
     }
 
     /**
-     * Set the html value.
+     * Set the summary value.
      *
-     * @param html the html value to set
-     * @return the Message object itself.
+     * @param summary the summary value to set
+     * @return the MessageSummary object itself.
      */
-    public Message withHtml(MessageContent html) {
-        this.html = html;
-        return this;
-    }
-
-    /**
-     * Get the text value.
-     *
-     * @return the text value
-     */
-    public MessageContent text() {
-        return this.text;
-    }
-
-    /**
-     * Set the text value.
-     *
-     * @param text the text value to set
-     * @return the Message object itself.
-     */
-    public Message withText(MessageContent text) {
-        this.text = text;
+    public MessageSummary withSummary(String summary) {
+        this.summary = summary;
         return this;
     }
 
@@ -318,7 +286,7 @@ public class Message {
      *
      * @return the attachments value
      */
-    public List<Attachment> attachments() {
+    public Integer attachments() {
         return this.attachments;
     }
 
@@ -326,30 +294,10 @@ public class Message {
      * Set the attachments value.
      *
      * @param attachments the attachments value to set
-     * @return the Message object itself.
+     * @return the MessageSummary object itself.
      */
-    public Message withAttachments(List<Attachment> attachments) {
+    public MessageSummary withAttachments(Integer attachments) {
         this.attachments = attachments;
-        return this;
-    }
-
-    /**
-     * Get the metadata value.
-     *
-     * @return the metadata value
-     */
-    public Metadata metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata value.
-     *
-     * @param metadata the metadata value to set
-     * @return the Message object itself.
-     */
-    public Message withMetadata(Metadata metadata) {
-        this.metadata = metadata;
         return this;
     }
 

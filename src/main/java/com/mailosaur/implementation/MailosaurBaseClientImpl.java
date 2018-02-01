@@ -8,7 +8,6 @@ package com.mailosaur.implementation;
 
 import com.mailosaur.MailosaurBaseClient;
 import com.mailosaur.Analysis;
-import com.mailosaur.Emails;
 import com.mailosaur.Files;
 import com.mailosaur.Messages;
 import com.mailosaur.Servers;
@@ -33,19 +32,6 @@ public class MailosaurBaseClientImpl extends ServiceClient implements MailosaurB
      */
     public Analysis analysis() {
         return this.analysis;
-    }
-
-    /**
-     * The Emails object to access its operations.
-     */
-    private Emails emails;
-
-    /**
-     * Gets the Emails object to access its operations.
-     * @return the Emails object.
-     */
-    public Emails emails() {
-        return this.emails;
     }
 
     /**
@@ -91,7 +77,7 @@ public class MailosaurBaseClientImpl extends ServiceClient implements MailosaurB
      * Initializes an instance of MailosaurBaseClient client.
      */
     public MailosaurBaseClientImpl() {
-        this("https://next.mailosaur.com");
+        this("https://mailosaur.com");
     }
 
     /**
@@ -111,7 +97,7 @@ public class MailosaurBaseClientImpl extends ServiceClient implements MailosaurB
      * @param restBuilder the builder for building an Retrofit client, bundled with user configurations
      */
     public MailosaurBaseClientImpl(OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        this("https://next.mailosaur.com", clientBuilder, restBuilder);
+        this("https://mailosaur.com", clientBuilder, restBuilder);
         initialize();
     }
 
@@ -139,7 +125,6 @@ public class MailosaurBaseClientImpl extends ServiceClient implements MailosaurB
 
     private void initialize() {
         this.analysis = new AnalysisImpl(retrofit(), this);
-        this.emails = new EmailsImpl(retrofit(), this);
         this.files = new FilesImpl(retrofit(), this);
         this.messages = new MessagesImpl(retrofit(), this);
         this.servers = new ServersImpl(retrofit(), this);

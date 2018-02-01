@@ -11,7 +11,6 @@ import javax.mail.MessagingException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mailosaur.models.Email;
 import com.mailosaur.models.Server;
 import com.mailosaur.models.ServerCreateOptions;
 
@@ -52,7 +51,7 @@ public class ServersTest {
 		assertNotNull(createdServer.id());
 		assertNotNull(createdServer.password());
 		assertNotNull(createdServer.users());
-		assertEquals(new Long(0), createdServer.emails());
+		assertEquals(0, (int)createdServer.emails());
 		assertNotNull(createdServer.forwardingRules());
     	
     	// Retrieve a server and confirm it has expected content
@@ -61,7 +60,7 @@ public class ServersTest {
 		assertEquals(createdServer.name(), retrievedServer.name());
 		assertNotNull(retrievedServer.password());
 		assertNotNull(retrievedServer.users());
-		assertEquals(new Long(0), retrievedServer.emails());
+		assertEquals(0, (int)retrievedServer.emails());
 		assertNotNull(retrievedServer.forwardingRules());
     	
     	// Update a server and confirm it has changed

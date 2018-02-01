@@ -10,9 +10,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The EmailData model.
+ * The MessageContent model.
  */
-public class EmailData {
+public class MessageContent {
     /**
      * The links property.
      */
@@ -44,9 +44,9 @@ public class EmailData {
      * Set the links value.
      *
      * @param links the links value to set
-     * @return the EmailData object itself.
+     * @return the MessageContent object itself.
      */
-    public EmailData withLinks(List<Link> links) {
+    public MessageContent withLinks(List<Link> links) {
         this.links = links;
         return this;
     }
@@ -64,9 +64,9 @@ public class EmailData {
      * Set the images value.
      *
      * @param images the images value to set
-     * @return the EmailData object itself.
+     * @return the MessageContent object itself.
      */
-    public EmailData withImages(List<Image> images) {
+    public MessageContent withImages(List<Image> images) {
         this.images = images;
         return this;
     }
@@ -84,9 +84,9 @@ public class EmailData {
      * Set the body value.
      *
      * @param body the body value to set
-     * @return the EmailData object itself.
+     * @return the MessageContent object itself.
      */
-    public EmailData withBody(String body) {
+    public MessageContent withBody(String body) {
         this.body = body;
         return this;
     }
