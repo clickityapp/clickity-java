@@ -6,7 +6,7 @@
 
 package com.mailosaur.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The Link model.
@@ -15,13 +15,13 @@ public class Link {
     /**
      * The href property.
      */
-    @JsonProperty(value = "href")
+    @Key
     private String href;
 
     /**
      * The text property.
      */
-    @JsonProperty(value = "text")
+    @Key
     private String text;
 
     /**
@@ -34,34 +34,12 @@ public class Link {
     }
 
     /**
-     * Set the href value.
-     *
-     * @param href the href value to set
-     * @return the Link object itself.
-     */
-    public Link withHref(String href) {
-        this.href = href;
-        return this;
-    }
-
-    /**
      * Get the text value.
      *
      * @return the text value
      */
     public String text() {
         return this.text;
-    }
-
-    /**
-     * Set the text value.
-     *
-     * @param text the text value to set
-     * @return the Link object itself.
-     */
-    public Link withText(String text) {
-        this.text = text;
-        return this;
     }
 
 }

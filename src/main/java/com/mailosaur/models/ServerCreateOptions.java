@@ -6,7 +6,7 @@
 
 package com.mailosaur.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The ServerCreateOptions model.
@@ -15,7 +15,7 @@ public class ServerCreateOptions {
     /**
      * A name used to identify the server.
      */
-    @JsonProperty(value = "name")
+    @Key
     private String name;
 
     /**

@@ -7,7 +7,7 @@
 package com.mailosaur.models;
 
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The MailosaurError model.
@@ -17,19 +17,19 @@ public class MailosaurError {
      * Possible values include: 'AuthenticationError', 'ValidationError',
      * 'ResourceNotFoundError', 'UnknownError'.
      */
-    @JsonProperty(value = "type")
+    @Key
     private String type;
 
     /**
      * The messages property.
      */
-    @JsonProperty(value = "messages")
+    @Key
     private Map<String, String> messages;
 
     /**
      * The model property.
      */
-    @JsonProperty(value = "model")
+    @Key
     private Object model;
 
     /**

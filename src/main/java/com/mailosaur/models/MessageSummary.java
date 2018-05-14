@@ -8,8 +8,9 @@ package com.mailosaur.models;
 
 import java.util.UUID;
 import java.util.List;
-import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.Key;
 
 /**
  * The MessageSummary model.
@@ -18,67 +19,61 @@ public class MessageSummary {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id", required = true)
+	@Key
     private UUID id;
 
     /**
      * The server property.
      */
-    @JsonProperty(value = "server")
+	@Key
     private String server;
-
-    /**
-     * The rcpt property.
-     */
-    @JsonProperty(value = "rcpt")
-    private List<MessageAddress> rcpt;
 
     /**
      * The from property.
      */
-    @JsonProperty(value = "from")
+	@Key
     private List<MessageAddress> from;
 
     /**
      * The to property.
      */
-    @JsonProperty(value = "to")
+	@Key
     private List<MessageAddress> to;
 
     /**
      * The cc property.
      */
-    @JsonProperty(value = "cc")
+	@Key
     private List<MessageAddress> cc;
 
     /**
      * The bcc property.
      */
-    @JsonProperty(value = "bcc")
+	@Key
     private List<MessageAddress> bcc;
 
     /**
      * The received property.
      */
-    @JsonProperty(value = "received")
+	@Key
     private DateTime received;
 
     /**
      * The subject property.
      */
-    @JsonProperty(value = "subject")
+	@Key
     private String subject;
 
     /**
      * The summary property.
      */
-    @JsonProperty(value = "summary")
+	@Key
     private String summary;
 
     /**
      * The attachments property.
      */
-    @JsonProperty(value = "attachments")
+	@Key
     private Integer attachments;
 
     /**
@@ -91,54 +86,12 @@ public class MessageSummary {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withId(UUID id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the server value.
      *
      * @return the server value
      */
     public String server() {
         return this.server;
-    }
-
-    /**
-     * Set the server value.
-     *
-     * @param server the server value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withServer(String server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the rcpt value.
-     *
-     * @return the rcpt value
-     */
-    public List<MessageAddress> rcpt() {
-        return this.rcpt;
-    }
-
-    /**
-     * Set the rcpt value.
-     *
-     * @param rcpt the rcpt value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withRcpt(List<MessageAddress> rcpt) {
-        this.rcpt = rcpt;
-        return this;
     }
 
     /**
@@ -151,34 +104,12 @@ public class MessageSummary {
     }
 
     /**
-     * Set the from value.
-     *
-     * @param from the from value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withFrom(List<MessageAddress> from) {
-        this.from = from;
-        return this;
-    }
-
-    /**
      * Get the to value.
      *
      * @return the to value
      */
     public List<MessageAddress> to() {
         return this.to;
-    }
-
-    /**
-     * Set the to value.
-     *
-     * @param to the to value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withTo(List<MessageAddress> to) {
-        this.to = to;
-        return this;
     }
 
     /**
@@ -191,34 +122,12 @@ public class MessageSummary {
     }
 
     /**
-     * Set the cc value.
-     *
-     * @param cc the cc value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withCc(List<MessageAddress> cc) {
-        this.cc = cc;
-        return this;
-    }
-
-    /**
      * Get the bcc value.
      *
      * @return the bcc value
      */
     public List<MessageAddress> bcc() {
         return this.bcc;
-    }
-
-    /**
-     * Set the bcc value.
-     *
-     * @param bcc the bcc value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withBcc(List<MessageAddress> bcc) {
-        this.bcc = bcc;
-        return this;
     }
 
     /**
@@ -231,34 +140,12 @@ public class MessageSummary {
     }
 
     /**
-     * Set the received value.
-     *
-     * @param received the received value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withReceived(DateTime received) {
-        this.received = received;
-        return this;
-    }
-
-    /**
      * Get the subject value.
      *
      * @return the subject value
      */
     public String subject() {
         return this.subject;
-    }
-
-    /**
-     * Set the subject value.
-     *
-     * @param subject the subject value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withSubject(String subject) {
-        this.subject = subject;
-        return this;
     }
 
     /**
@@ -271,34 +158,12 @@ public class MessageSummary {
     }
 
     /**
-     * Set the summary value.
-     *
-     * @param summary the summary value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withSummary(String summary) {
-        this.summary = summary;
-        return this;
-    }
-
-    /**
      * Get the attachments value.
      *
      * @return the attachments value
      */
     public Integer attachments() {
         return this.attachments;
-    }
-
-    /**
-     * Set the attachments value.
-     *
-     * @param attachments the attachments value to set
-     * @return the MessageSummary object itself.
-     */
-    public MessageSummary withAttachments(Integer attachments) {
-        this.attachments = attachments;
-        return this;
     }
 
 }

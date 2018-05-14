@@ -7,7 +7,7 @@
 package com.mailosaur.models;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The Metadata model.
@@ -16,7 +16,7 @@ public class Metadata {
     /**
      * The headers property.
      */
-    @JsonProperty(value = "headers")
+	@Key
     private List<MessageHeader> headers;
 
     /**
@@ -26,17 +26,6 @@ public class Metadata {
      */
     public List<MessageHeader> headers() {
         return this.headers;
-    }
-
-    /**
-     * Set the headers value.
-     *
-     * @param headers the headers value to set
-     * @return the Metadata object itself.
-     */
-    public Metadata withHeaders(List<MessageHeader> headers) {
-        this.headers = headers;
-        return this;
     }
 
 }

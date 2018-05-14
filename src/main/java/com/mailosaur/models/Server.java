@@ -8,7 +8,7 @@ package com.mailosaur.models;
 
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The Server model.
@@ -17,37 +17,37 @@ public class Server {
     /**
      * Unique identifier for the server.
      */
-    @JsonProperty(value = "id")
+	@Key
     private String id;
 
     /**
      * The password used for SMTP authentication.
      */
-    @JsonProperty(value = "password")
+    @Key
     private String password;
 
     /**
      * A name used to identify the server.
      */
-    @JsonProperty(value = "name")
+    @Key
     private String name;
 
     /**
      * The users property.
      */
-    @JsonProperty(value = "users")
+    @Key
     private List<UUID> users;
 
     /**
-     * The current count of emails held within the server.
+     * The current count of messages held within the server.
      */
-    @JsonProperty(value = "emails")
-    private Integer emails;
+    @Key
+    private Integer messages;
 
     /**
      * The forwardingRules property.
      */
-    @JsonProperty(value = "forwardingRules")
+    @Key
     private List<ForwardingRule> forwardingRules;
 
     /**
@@ -60,34 +60,12 @@ public class Server {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the Server object itself.
-     */
-    public Server withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the password value.
      *
      * @return the password value
      */
     public String password() {
         return this.password;
-    }
-
-    /**
-     * Set the password value.
-     *
-     * @param password the password value to set
-     * @return the Server object itself.
-     */
-    public Server withPassword(String password) {
-        this.password = password;
-        return this;
     }
 
     /**
@@ -120,34 +98,12 @@ public class Server {
     }
 
     /**
-     * Set the users value.
+     * Get the messages value.
      *
-     * @param users the users value to set
-     * @return the Server object itself.
+     * @return the messages value
      */
-    public Server withUsers(List<UUID> users) {
-        this.users = users;
-        return this;
-    }
-
-    /**
-     * Get the emails value.
-     *
-     * @return the emails value
-     */
-    public Integer emails() {
-        return this.emails;
-    }
-
-    /**
-     * Set the emails value.
-     *
-     * @param emails the emails value to set
-     * @return the Server object itself.
-     */
-    public Server withEmails(Integer emails) {
-        this.emails = emails;
-        return this;
+    public Integer messages() {
+        return this.messages;
     }
 
     /**
@@ -157,17 +113,6 @@ public class Server {
      */
     public List<ForwardingRule> forwardingRules() {
         return this.forwardingRules;
-    }
-
-    /**
-     * Set the forwardingRules value.
-     *
-     * @param forwardingRules the forwardingRules value to set
-     * @return the Server object itself.
-     */
-    public Server withForwardingRules(List<ForwardingRule> forwardingRules) {
-        this.forwardingRules = forwardingRules;
-        return this;
     }
 
 }

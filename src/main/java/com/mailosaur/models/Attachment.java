@@ -7,7 +7,7 @@
 package com.mailosaur.models;
 
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The Attachment model.
@@ -16,31 +16,31 @@ public class Attachment {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id", required = true)
+    @Key
     private UUID id;
 
     /**
      * The contentType property.
      */
-    @JsonProperty(value = "contentType")
+    @Key
     private String contentType;
 
     /**
      * The fileName property.
      */
-    @JsonProperty(value = "fileName")
+    @Key
     private String fileName;
 
     /**
      * The contentId property.
      */
-    @JsonProperty(value = "contentId")
+    @Key
     private String contentId;
 
     /**
      * The length property.
      */
-    @JsonProperty(value = "length")
+    @Key
     private Integer length;
 
     /**
@@ -53,34 +53,12 @@ public class Attachment {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the Attachment object itself.
-     */
-    public Attachment withId(UUID id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the contentType value.
      *
      * @return the contentType value
      */
     public String contentType() {
         return this.contentType;
-    }
-
-    /**
-     * Set the contentType value.
-     *
-     * @param contentType the contentType value to set
-     * @return the Attachment object itself.
-     */
-    public Attachment withContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
     }
 
     /**
@@ -93,34 +71,12 @@ public class Attachment {
     }
 
     /**
-     * Set the fileName value.
-     *
-     * @param fileName the fileName value to set
-     * @return the Attachment object itself.
-     */
-    public Attachment withFileName(String fileName) {
-        this.fileName = fileName;
-        return this;
-    }
-
-    /**
      * Get the contentId value.
      *
      * @return the contentId value
      */
     public String contentId() {
         return this.contentId;
-    }
-
-    /**
-     * Set the contentId value.
-     *
-     * @param contentId the contentId value to set
-     * @return the Attachment object itself.
-     */
-    public Attachment withContentId(String contentId) {
-        this.contentId = contentId;
-        return this;
     }
 
     /**
@@ -131,16 +87,4 @@ public class Attachment {
     public Integer length() {
         return this.length;
     }
-
-    /**
-     * Set the length value.
-     *
-     * @param length the length value to set
-     * @return the Attachment object itself.
-     */
-    public Attachment withLength(Integer length) {
-        this.length = length;
-        return this;
-    }
-
 }

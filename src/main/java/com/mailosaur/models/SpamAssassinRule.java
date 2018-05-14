@@ -6,7 +6,7 @@
 
 package com.mailosaur.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The SpamAssassinRule model.
@@ -15,19 +15,19 @@ public class SpamAssassinRule {
     /**
      * The score property.
      */
-    @JsonProperty(value = "score")
+	@Key
     private Double score;
 
     /**
      * The rule property.
      */
-    @JsonProperty(value = "rule")
+	@Key
     private String rule;
 
     /**
      * The description property.
      */
-    @JsonProperty(value = "description")
+	@Key
     private String description;
 
     /**
@@ -40,17 +40,6 @@ public class SpamAssassinRule {
     }
 
     /**
-     * Set the score value.
-     *
-     * @param score the score value to set
-     * @return the SpamAssassinRule object itself.
-     */
-    public SpamAssassinRule withScore(Double score) {
-        this.score = score;
-        return this;
-    }
-
-    /**
      * Get the rule value.
      *
      * @return the rule value
@@ -60,34 +49,12 @@ public class SpamAssassinRule {
     }
 
     /**
-     * Set the rule value.
-     *
-     * @param rule the rule value to set
-     * @return the SpamAssassinRule object itself.
-     */
-    public SpamAssassinRule withRule(String rule) {
-        this.rule = rule;
-        return this;
-    }
-
-    /**
      * Get the description value.
      *
      * @return the description value
      */
     public String description() {
         return this.description;
-    }
-
-    /**
-     * Set the description value.
-     *
-     * @param description the description value to set
-     * @return the SpamAssassinRule object itself.
-     */
-    public SpamAssassinRule withDescription(String description) {
-        this.description = description;
-        return this;
     }
 
 }

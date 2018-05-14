@@ -6,145 +6,67 @@
 
 package com.mailosaur;
 
-import com.mailosaur.MailosaurException;
+import java.io.IOException;
+import java.util.Random;
+
 import com.mailosaur.models.Server;
 import com.mailosaur.models.ServerCreateOptions;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
-import java.util.List;
-import rx.Observable;
+import com.mailosaur.models.ServerListResult;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in Servers.
  */
-public interface Servers {
+public class Servers {
+    /** The service client containing this operation class. */
+    private MailosaurClient client;
+    
+    /**
+     * Initializes an instance of Servers.
+     *
+     * @param client the instance of the client containing this operation class.
+     */
+    public Servers(MailosaurClient client) {
+        this.client = client;
+    }
+
     /**
      * List all servers.
      * Returns a list of your virtual SMTP servers. Servers are returned sorted in alphabetical order.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the List&lt;Server&gt; object if successful.
      */
-    List<Server> list();
-
-    /**
-     * List all servers.
-     * Returns a list of your virtual SMTP servers. Servers are returned sorted in alphabetical order.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<List<Server>> listAsync(final ServiceCallback<List<Server>> serviceCallback);
-
-    /**
-     * List all servers.
-     * Returns a list of your virtual SMTP servers. Servers are returned sorted in alphabetical order.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Server&gt; object
-     */
-    Observable<List<Server>> listAsync();
-
-    /**
-     * List all servers.
-     * Returns a list of your virtual SMTP servers. Servers are returned sorted in alphabetical order.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;Server&gt; object
-     */
-    Observable<ServiceResponse<List<Server>>> listWithServiceResponseAsync();
+    public ServerListResult list() throws IOException, MailosaurException {
+        return client.request("GET", "api/servers").parseAs(ServerListResult.class);
+    }
 
     /**
      * Create a server.
      * Creates a new virtual SMTP server and returns it.
      *
      * @param serverCreateOptions the ServerCreateOptions value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the Server object if successful.
      */
-    Server create(ServerCreateOptions serverCreateOptions);
-
-    /**
-     * Create a server.
-     * Creates a new virtual SMTP server and returns it.
-     *
-     * @param serverCreateOptions the ServerCreateOptions value
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Server> createAsync(ServerCreateOptions serverCreateOptions, final ServiceCallback<Server> serviceCallback);
-
-    /**
-     * Create a server.
-     * Creates a new virtual SMTP server and returns it.
-     *
-     * @param serverCreateOptions the ServerCreateOptions value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Server object
-     */
-    Observable<Server> createAsync(ServerCreateOptions serverCreateOptions);
-
-    /**
-     * Create a server.
-     * Creates a new virtual SMTP server and returns it.
-     *
-     * @param serverCreateOptions the ServerCreateOptions value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Server object
-     */
-    Observable<ServiceResponse<Server>> createWithServiceResponseAsync(ServerCreateOptions serverCreateOptions);
+    public Server create(ServerCreateOptions serverCreateOptions) throws IOException, MailosaurException {
+    	return client.request("POST", "api/servers", serverCreateOptions).parseAs(Server.class);
+    }
 
     /**
      * Retrieve a server.
      * Retrieves the detail for a single server. Simply supply the unique identifier for the required server.
      *
      * @param id The identifier of the server to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the Server object if successful.
      */
-    Server get(String id);
-
-    /**
-     * Retrieve a server.
-     * Retrieves the detail for a single server. Simply supply the unique identifier for the required server.
-     *
-     * @param id The identifier of the server to be retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Server> getAsync(String id, final ServiceCallback<Server> serviceCallback);
-
-    /**
-     * Retrieve a server.
-     * Retrieves the detail for a single server. Simply supply the unique identifier for the required server.
-     *
-     * @param id The identifier of the server to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Server object
-     */
-    Observable<Server> getAsync(String id);
-
-    /**
-     * Retrieve a server.
-     * Retrieves the detail for a single server. Simply supply the unique identifier for the required server.
-     *
-     * @param id The identifier of the server to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Server object
-     */
-    Observable<ServiceResponse<Server>> getWithServiceResponseAsync(String id);
+    public Server get(String id) throws IOException, MailosaurException {
+    	return client.request("GET", "api/servers/" + id).parseAs(Server.class);
+    }
 
     /**
      * Update a server.
@@ -152,46 +74,13 @@ public interface Servers {
      *
      * @param id The identifier of the server to be updated.
      * @param server the Server value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the Server object if successful.
      */
-    Server update(String id, Server server);
-
-    /**
-     * Update a server.
-     * Updats a single server and returns it.
-     *
-     * @param id The identifier of the server to be updated.
-     * @param server the Server value
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Server> updateAsync(String id, Server server, final ServiceCallback<Server> serviceCallback);
-
-    /**
-     * Update a server.
-     * Updats a single server and returns it.
-     *
-     * @param id The identifier of the server to be updated.
-     * @param server the Server value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Server object
-     */
-    Observable<Server> updateAsync(String id, Server server);
-
-    /**
-     * Update a server.
-     * Updats a single server and returns it.
-     *
-     * @param id The identifier of the server to be updated.
-     * @param server the Server value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Server object
-     */
-    Observable<ServiceResponse<Server>> updateWithServiceResponseAsync(String id, Server server);
+    public Server update(String id, Server server) throws IOException, MailosaurException {
+    	return client.request("PUT", "api/servers/" + id, server).parseAs(Server.class);
+    }
 
     /**
      * Delete a server.
@@ -200,40 +89,18 @@ public interface Servers {
      * @param id The identifier of the server to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      */
-    void delete(String id);
+    public void delete(String id) throws MailosaurException {
+    	client.request("DELETE", "api/servers/" + id);
+    }
 
-    /**
-     * Delete a server.
-     * Permanently deletes a server. This operation cannot be undone. Also deletes all emails and associated attachments within the server.
-     *
-     * @param id The identifier of the server to be deleted.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Void> deleteAsync(String id, final ServiceCallback<Void> serviceCallback);
+    private Random random = new Random();
 
-    /**
-     * Delete a server.
-     * Permanently deletes a server. This operation cannot be undone. Also deletes all emails and associated attachments within the server.
-     *
-     * @param id The identifier of the server to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<Void> deleteAsync(String id);
-
-    /**
-     * Delete a server.
-     * Permanently deletes a server. This operation cannot be undone. Also deletes all emails and associated attachments within the server.
-     *
-     * @param id The identifier of the server to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String id);
-
-    String generateEmailAddress(String server);
+    public String generateEmailAddress(String server) {
+        String host = System.getenv("MAILOSAUR_SMTP_HOST");
+        host = (host != null) ? host : "mailosaur.io";
+        String randomString = String.valueOf(random.nextInt(10000000));
+        return String.format("%s.%s@%s", randomString, server, host);    	
+    }
 }

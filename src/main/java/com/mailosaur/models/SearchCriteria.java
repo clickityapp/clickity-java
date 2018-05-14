@@ -6,7 +6,7 @@
 
 package com.mailosaur.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The SearchCriteria model.
@@ -15,19 +15,19 @@ public class SearchCriteria {
     /**
      * The full email address to which the target email was sent.
      */
-    @JsonProperty(value = "sentTo")
+	@Key
     private String sentTo;
 
     /**
      * The value to seek within the target email's subject line.
      */
-    @JsonProperty(value = "subject")
+	@Key
     private String subject;
 
     /**
      * The value to seek within the target email's HTML or text body.
      */
-    @JsonProperty(value = "body")
+	@Key
     private String body;
 
     /**

@@ -6,7 +6,7 @@
 
 package com.mailosaur.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The Image model.
@@ -15,13 +15,13 @@ public class Image {
     /**
      * The src property.
      */
-    @JsonProperty(value = "src")
+    @Key
     private String src;
 
     /**
      * The alt property.
      */
-    @JsonProperty(value = "alt")
+    @Key
     private String alt;
 
     /**

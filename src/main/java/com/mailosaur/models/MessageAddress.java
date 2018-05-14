@@ -6,7 +6,7 @@
 
 package com.mailosaur.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The MessageAddress model.
@@ -15,19 +15,19 @@ public class MessageAddress {
     /**
      * The name property.
      */
-    @JsonProperty(value = "name")
+	@Key
     private String name;
 
     /**
      * The email property.
      */
-    @JsonProperty(value = "email")
+	@Key
     private String email;
 
     /**
      * The phone property.
      */
-    @JsonProperty(value = "phone")
+	@Key
     private String phone;
 
     /**
@@ -40,17 +40,6 @@ public class MessageAddress {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the MessageAddress object itself.
-     */
-    public MessageAddress withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the email value.
      *
      * @return the email value
@@ -60,34 +49,12 @@ public class MessageAddress {
     }
 
     /**
-     * Set the email value.
-     *
-     * @param email the email value to set
-     * @return the MessageAddress object itself.
-     */
-    public MessageAddress withEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    /**
      * Get the phone value.
      *
      * @return the phone value
      */
     public String phone() {
         return this.phone;
-    }
-
-    /**
-     * Set the phone value.
-     *
-     * @param phone the phone value to set
-     * @return the MessageAddress object itself.
-     */
-    public MessageAddress withPhone(String phone) {
-        this.phone = phone;
-        return this;
     }
 
 }

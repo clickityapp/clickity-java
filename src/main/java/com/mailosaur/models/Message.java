@@ -8,8 +8,9 @@ package com.mailosaur.models;
 
 import java.util.UUID;
 import java.util.List;
-import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.Key;
 
 /**
  * The Message model.
@@ -18,79 +19,73 @@ public class Message {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id")
+    @Key
     private UUID id;
 
     /**
      * The server property.
      */
-    @JsonProperty(value = "server")
+    @Key
     private String server;
-
-    /**
-     * The rcpt property.
-     */
-    @JsonProperty(value = "rcpt")
-    private List<MessageAddress> rcpt;
 
     /**
      * The from property.
      */
-    @JsonProperty(value = "from")
+    @Key
     private List<MessageAddress> from;
 
     /**
      * The to property.
      */
-    @JsonProperty(value = "to")
+    @Key
     private List<MessageAddress> to;
 
     /**
      * The cc property.
      */
-    @JsonProperty(value = "cc")
+    @Key
     private List<MessageAddress> cc;
 
     /**
      * The bcc property.
      */
-    @JsonProperty(value = "bcc")
+    @Key
     private List<MessageAddress> bcc;
 
     /**
      * The received property.
      */
-    @JsonProperty(value = "received")
+    @Key
     private DateTime received;
 
     /**
      * The subject property.
      */
-    @JsonProperty(value = "subject")
+    @Key
     private String subject;
 
     /**
      * The html property.
      */
-    @JsonProperty(value = "html")
+    @Key
     private MessageContent html;
 
     /**
      * The text property.
      */
-    @JsonProperty(value = "text")
+    @Key
     private MessageContent text;
 
     /**
      * The attachments property.
      */
-    @JsonProperty(value = "attachments")
+    @Key
     private List<Attachment> attachments;
 
     /**
      * The metadata property.
      */
-    @JsonProperty(value = "metadata")
+    @Key
     private Metadata metadata;
 
     /**
@@ -103,54 +98,12 @@ public class Message {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the Message object itself.
-     */
-    public Message withId(UUID id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the server value.
      *
      * @return the server value
      */
     public String server() {
         return this.server;
-    }
-
-    /**
-     * Set the server value.
-     *
-     * @param server the server value to set
-     * @return the Message object itself.
-     */
-    public Message withServer(String server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the rcpt value.
-     *
-     * @return the rcpt value
-     */
-    public List<MessageAddress> rcpt() {
-        return this.rcpt;
-    }
-
-    /**
-     * Set the rcpt value.
-     *
-     * @param rcpt the rcpt value to set
-     * @return the Message object itself.
-     */
-    public Message withRcpt(List<MessageAddress> rcpt) {
-        this.rcpt = rcpt;
-        return this;
     }
 
     /**
@@ -163,34 +116,12 @@ public class Message {
     }
 
     /**
-     * Set the from value.
-     *
-     * @param from the from value to set
-     * @return the Message object itself.
-     */
-    public Message withFrom(List<MessageAddress> from) {
-        this.from = from;
-        return this;
-    }
-
-    /**
      * Get the to value.
      *
      * @return the to value
      */
     public List<MessageAddress> to() {
         return this.to;
-    }
-
-    /**
-     * Set the to value.
-     *
-     * @param to the to value to set
-     * @return the Message object itself.
-     */
-    public Message withTo(List<MessageAddress> to) {
-        this.to = to;
-        return this;
     }
 
     /**
@@ -203,34 +134,12 @@ public class Message {
     }
 
     /**
-     * Set the cc value.
-     *
-     * @param cc the cc value to set
-     * @return the Message object itself.
-     */
-    public Message withCc(List<MessageAddress> cc) {
-        this.cc = cc;
-        return this;
-    }
-
-    /**
      * Get the bcc value.
      *
      * @return the bcc value
      */
     public List<MessageAddress> bcc() {
         return this.bcc;
-    }
-
-    /**
-     * Set the bcc value.
-     *
-     * @param bcc the bcc value to set
-     * @return the Message object itself.
-     */
-    public Message withBcc(List<MessageAddress> bcc) {
-        this.bcc = bcc;
-        return this;
     }
 
     /**
@@ -243,34 +152,12 @@ public class Message {
     }
 
     /**
-     * Set the received value.
-     *
-     * @param received the received value to set
-     * @return the Message object itself.
-     */
-    public Message withReceived(DateTime received) {
-        this.received = received;
-        return this;
-    }
-
-    /**
      * Get the subject value.
      *
      * @return the subject value
      */
     public String subject() {
         return this.subject;
-    }
-
-    /**
-     * Set the subject value.
-     *
-     * @param subject the subject value to set
-     * @return the Message object itself.
-     */
-    public Message withSubject(String subject) {
-        this.subject = subject;
-        return this;
     }
 
     /**
@@ -283,34 +170,12 @@ public class Message {
     }
 
     /**
-     * Set the html value.
-     *
-     * @param html the html value to set
-     * @return the Message object itself.
-     */
-    public Message withHtml(MessageContent html) {
-        this.html = html;
-        return this;
-    }
-
-    /**
      * Get the text value.
      *
      * @return the text value
      */
     public MessageContent text() {
         return this.text;
-    }
-
-    /**
-     * Set the text value.
-     *
-     * @param text the text value to set
-     * @return the Message object itself.
-     */
-    public Message withText(MessageContent text) {
-        this.text = text;
-        return this;
     }
 
     /**
@@ -323,34 +188,12 @@ public class Message {
     }
 
     /**
-     * Set the attachments value.
-     *
-     * @param attachments the attachments value to set
-     * @return the Message object itself.
-     */
-    public Message withAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
-        return this;
-    }
-
-    /**
      * Get the metadata value.
      *
      * @return the metadata value
      */
     public Metadata metadata() {
         return this.metadata;
-    }
-
-    /**
-     * Set the metadata value.
-     *
-     * @param metadata the metadata value to set
-     * @return the Message object itself.
-     */
-    public Message withMetadata(Metadata metadata) {
-        this.metadata = metadata;
-        return this;
     }
 
 }

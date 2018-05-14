@@ -29,7 +29,7 @@ public class FilesTest {
 	private String isoDateString = dateFormat.format(Calendar.getInstance().getTime());
 	
 	@BeforeClass
-    public static void setUpBeforeClass() throws IOException, InterruptedException, MessagingException {
+    public static void setUpBeforeClass() throws IOException, InterruptedException, MessagingException, MailosaurException {
 		server = System.getenv("MAILOSAUR_SERVER");
 		String apiKey = System.getenv("MAILOSAUR_API_KEY");
 		String baseUrl = System.getenv("MAILOSAUR_BASE_URL");
@@ -53,18 +53,8 @@ public class FilesTest {
 	}
 
     @Test
-	public void testGetEmail() throws IOException {
-    	InputStream inputStream = client.files().getEmail(email.id());
-    	
-    	ByteArrayOutputStream baos = new ByteArrayOutputStream();				
-		byte[] buffer = new byte[1024];
-		int read = 0;
-		while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
-			baos.write(buffer, 0, read);
-		}		
-		baos.flush();		
-		byte[] bytes = baos.toByteArray();
-    	
+	public void testGetEmail() throws IOException, MailosaurException {
+    	byte[] bytes = client.files().getEmail(email.id());
     	assertNotNull(bytes);
         assertTrue(bytes.length > 1);
         assertTrue(new String(bytes).contains(email.subject()));

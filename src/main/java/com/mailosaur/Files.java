@@ -6,104 +6,52 @@
 
 package com.mailosaur;
 
-import com.microsoft.rest.RestException;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
+import com.google.common.reflect.TypeToken;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.UUID;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in Files.
  */
-public interface Files {
+public class Files {
+	/** The service client containing this operation class. */
+    private MailosaurClient client;
+    
     /**
-     * Download an attachment.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
+     * Initializes an instance of Files.
      *
-     * @param id The identifier of the file to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws RestException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
+     * @param client the instance of the client containing this operation class.
      */
-    InputStream getAttachment(UUID id);
+    public Files(MailosaurClient client) {
+        this.client = client;
+    }
 
     /**
      * Download an attachment.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
+     * Downloads a single attachment. Simply supply the unique identifier for the required attachment.
      *
      * @param id The identifier of the file to be retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @throws MailosaurException thrown if the request is rejected by server
+     * @throws IOException
+     * @return the byte array if successful.
      */
-    ServiceFuture<InputStream> getAttachmentAsync(UUID id, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * Download an attachment.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
-     *
-     * @param id The identifier of the file to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> getAttachmentAsync(UUID id);
-
-    /**
-     * Download an attachment.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
-     *
-     * @param id The identifier of the file to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponse<InputStream>> getAttachmentWithServiceResponseAsync(UUID id);
+    public byte[] getAttachment(UUID id) throws MailosaurException, IOException {
+    	return client.requestFile("GET", "api/files/attachments/" + id).toByteArray();
+    }
 
     /**
      * Download raw.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
+     * Downloads an EML file representing the specified email. Simply supply the unique identifier for the required email.
      *
      * @param id The identifier of the file to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws RestException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
+     * @throws MailosaurException thrown if the request is rejected by server
+     * @throws IOException
+     * @return the byte array if successful.
      */
-    InputStream getEmail(UUID id);
-
-    /**
-     * Download raw.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
-     *
-     * @param id The identifier of the file to be retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<InputStream> getEmailAsync(UUID id, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * Download raw.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
-     *
-     * @param id The identifier of the file to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> getEmailAsync(UUID id);
-
-    /**
-     * Download raw.
-     * Returns a list of your emails. The emails are returned sorted by received date, with the most recently-received emails appearing first.
-     *
-     * @param id The identifier of the file to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponse<InputStream>> getEmailWithServiceResponseAsync(UUID id);
+    public byte[] getEmail(UUID id) throws MailosaurException, IOException {
+    	return client.requestFile("GET", "api/files/email/" + id).toByteArray();
+    }
 
 }

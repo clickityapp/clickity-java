@@ -7,7 +7,7 @@
 package com.mailosaur.models;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * Type serialized down the wire.
@@ -16,7 +16,7 @@ public class MessageListResult {
     /**
      * The items property.
      */
-    @JsonProperty(value = "items")
+	@Key
     private List<MessageSummary> items;
 
     /**
@@ -26,17 +26,6 @@ public class MessageListResult {
      */
     public List<MessageSummary> items() {
         return this.items;
-    }
-
-    /**
-     * Set the items value.
-     *
-     * @param items the items value to set
-     * @return the MessageListResult object itself.
-     */
-    public MessageListResult withItems(List<MessageSummary> items) {
-        this.items = items;
-        return this;
     }
 
 }

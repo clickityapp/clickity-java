@@ -6,61 +6,38 @@
 
 package com.mailosaur;
 
-import com.mailosaur.MailosaurException;
-import com.mailosaur.models.SpamCheckResult;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.UUID;
-import rx.Observable;
+
+import com.mailosaur.models.SpamAnalysisResult;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in Analysis.
  */
-public interface Analysis {
+public class Analysis {
+	/** The service client containing this operation class. */
+    private MailosaurClient client;
+    
     /**
-     * Perform a spam check.
-     * Perform a spam analysis on the specified email.
+     * Initializes an instance of Analysis.
+     *
+     * @param client the instance of the client containing this operation class.
+     */
+    public Analysis(MailosaurClient client) {
+        this.client = client;
+    }
+
+    /**
+     * Perform spam analysis on the specified email.
      *
      * @param email The identifier of the email to be analyzed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the SpamCheckResult object if successful.
      */
-    SpamCheckResult spam(UUID email);
-
-    /**
-     * Perform a spam check.
-     * Perform a spam analysis on the specified email.
-     *
-     * @param email The identifier of the email to be analyzed.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<SpamCheckResult> spamAsync(UUID email, final ServiceCallback<SpamCheckResult> serviceCallback);
-
-    /**
-     * Perform a spam check.
-     * Perform a spam analysis on the specified email.
-     *
-     * @param email The identifier of the email to be analyzed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SpamCheckResult object
-     */
-    Observable<SpamCheckResult> spamAsync(UUID email);
-
-    /**
-     * Perform a spam check.
-     * Perform a spam analysis on the specified email.
-     *
-     * @param email The identifier of the email to be analyzed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SpamCheckResult object
-     */
-    Observable<ServiceResponse<SpamCheckResult>> spamWithServiceResponseAsync(UUID email);
+    public SpamAnalysisResult spam(UUID email) throws IOException, MailosaurException {
+    	return client.request("GET", "api/analysis/spam/" + email).parseAs(SpamAnalysisResult.class);
+    }
 
 }

@@ -6,7 +6,7 @@
 
 package com.mailosaur.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The ForwardingRule model.
@@ -15,25 +15,16 @@ public class ForwardingRule {
     /**
      * Possible values include: 'From', 'To', 'Subject'.
      */
-    @JsonProperty(value = "field")
+    @Key
     private String field;
 
-    /**
-     * Possible values include: 'EndsWith', 'StartsWith', 'Contains'.
-     */
-    @JsonProperty(value = "operator")
+    @Key
     private String operator;
 
-    /**
-     * The value property.
-     */
-    @JsonProperty(value = "value")
+    @Key
     private String value;
 
-    /**
-     * The forwardTo property.
-     */
-    @JsonProperty(value = "forwardTo")
+    @Key
     private String forwardTo;
 
     /**

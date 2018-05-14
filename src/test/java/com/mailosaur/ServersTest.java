@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.mailosaur.models.Server;
 import com.mailosaur.models.ServerCreateOptions;
+import com.mailosaur.models.ServerListResult;
 
 public class ServersTest {
 	private static MailosaurClient client;
@@ -30,19 +31,18 @@ public class ServersTest {
 	}
 	
 	@Test
-    public void testList() throws IOException {
-		List<Server> servers = client.servers().list();
-		assertTrue(servers.size() > 1);
+    public void testList() throws IOException, MailosaurException {
+		ServerListResult servers = client.servers().list();
+		assertTrue(servers.items().size() > 1);
     }
 	
-	@Test
-    public void testGetNotFound() throws IOException {
-		Server server = client.servers().get("efe907e9-74ed-4113-a3e0-a3d41d914765");
-    	assertNull(server);
+	@Test(expected = MailosaurException.class)
+    public void testGetNotFound() throws IOException, MailosaurException {
+		client.servers().get("efe907e9-74ed-4113-a3e0-a3d41d914765");
     }
     
     @Test
-    public void testCrud() throws IOException {
+    public void testCrud() throws IOException, MailosaurException {
     	String serverName = "My test";
     	
     	// Create a new server
@@ -51,7 +51,7 @@ public class ServersTest {
 		assertNotNull(createdServer.id());
 		assertNotNull(createdServer.password());
 		assertNotNull(createdServer.users());
-		assertEquals(0, (int)createdServer.emails());
+		assertEquals(0, (int)createdServer.messages());
 		assertNotNull(createdServer.forwardingRules());
     	
     	// Retrieve a server and confirm it has expected content
@@ -60,7 +60,7 @@ public class ServersTest {
 		assertEquals(createdServer.name(), retrievedServer.name());
 		assertNotNull(retrievedServer.password());
 		assertNotNull(retrievedServer.users());
-		assertEquals(0, (int)retrievedServer.emails());
+		assertEquals(0, (int)retrievedServer.messages());
 		assertNotNull(retrievedServer.forwardingRules());
     	
     	// Update a server and confirm it has changed
@@ -70,7 +70,7 @@ public class ServersTest {
 		assertEquals(retrievedServer.name(), updatedServer.name());
 		assertEquals(retrievedServer.password(), updatedServer.password());
 		assertEquals(retrievedServer.users(), updatedServer.users());
-		assertEquals(retrievedServer.emails(), updatedServer.emails());
+		assertEquals(retrievedServer.messages(), updatedServer.messages());
 		assertEquals(retrievedServer.forwardingRules(), updatedServer.forwardingRules());
     	
     	client.servers().delete(retrievedServer.id());

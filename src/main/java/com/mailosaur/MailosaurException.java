@@ -6,43 +6,18 @@
 
 package com.mailosaur;
 
-import com.microsoft.rest.RestException;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 import com.mailosaur.models.MailosaurError;
 
 /**
  * Exception thrown for an invalid response with MailosaurError information.
  */
-public class MailosaurException extends RestException {
-    /**
-     * Initializes a new instance of the MailosaurException class.
-     *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     */
-    public MailosaurException(final String message, final Response<ResponseBody> response) {
-        super(message, response);
-    }
-
-    /**
-     * Initializes a new instance of the MailosaurException class.
-     *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
-     * @param body the deserialized response body
-     */
-    public MailosaurException(final String message, final Response<ResponseBody> response, final MailosaurError body) {
-        super(message, response, body);
-    }
-
-    @Override
-    public MailosaurError body() {
-        return null;
-    }
-
+public class MailosaurException extends Exception {
+	public MailosaurException(String message, Exception ex) {
+		
+	}
+	
     public MailosaurError mailosaurError() {
-        return (MailosaurError) super.body();
+        return null;
     }
 }
 

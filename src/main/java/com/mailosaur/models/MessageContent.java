@@ -7,7 +7,7 @@
 package com.mailosaur.models;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.api.client.util.Key;
 
 /**
  * The MessageContent model.
@@ -16,19 +16,19 @@ public class MessageContent {
     /**
      * The links property.
      */
-    @JsonProperty(value = "links")
+	@Key
     private List<Link> links;
 
     /**
      * The images property.
      */
-    @JsonProperty(value = "images")
+	@Key
     private List<Image> images;
 
     /**
      * The body property.
      */
-    @JsonProperty(value = "body")
+	@Key
     private String body;
 
     /**
@@ -41,17 +41,6 @@ public class MessageContent {
     }
 
     /**
-     * Set the links value.
-     *
-     * @param links the links value to set
-     * @return the MessageContent object itself.
-     */
-    public MessageContent withLinks(List<Link> links) {
-        this.links = links;
-        return this;
-    }
-
-    /**
      * Get the images value.
      *
      * @return the images value
@@ -61,34 +50,12 @@ public class MessageContent {
     }
 
     /**
-     * Set the images value.
-     *
-     * @param images the images value to set
-     * @return the MessageContent object itself.
-     */
-    public MessageContent withImages(List<Image> images) {
-        this.images = images;
-        return this;
-    }
-
-    /**
      * Get the body value.
      *
      * @return the body value
      */
     public String body() {
         return this.body;
-    }
-
-    /**
-     * Set the body value.
-     *
-     * @param body the body value to set
-     * @return the MessageContent object itself.
-     */
-    public MessageContent withBody(String body) {
-        this.body = body;
-        return this;
     }
 
 }

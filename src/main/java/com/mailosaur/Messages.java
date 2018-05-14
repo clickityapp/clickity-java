@@ -6,64 +6,43 @@
 
 package com.mailosaur;
 
-import com.mailosaur.MailosaurException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.UUID;
+
 import com.mailosaur.models.Message;
 import com.mailosaur.models.MessageListResult;
 import com.mailosaur.models.SearchCriteria;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
-import java.util.UUID;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in Messages.
  */
-public interface Messages {
+public class Messages {
+	/** The service client containing this operation class. */
+    private MailosaurClient client;
+    
+    /**
+     * Initializes an instance of Messages.
+     *
+     * @param client the instance of the client containing this operation class.
+     */
+    public Messages(MailosaurClient client) {
+        this.client = client;
+    }
+    
     /**
      * Retrieve an message.
      * Retrieves the detail for a single message. Simply supply the unique identifier for the required message.
      *
      * @param id The identifier of the message to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the Message object if successful.
      */
-    Message get(UUID id);
-
-    /**
-     * Retrieve an message.
-     * Retrieves the detail for a single message. Simply supply the unique identifier for the required message.
-     *
-     * @param id The identifier of the message to be retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Message> getAsync(UUID id, final ServiceCallback<Message> serviceCallback);
-
-    /**
-     * Retrieve an message.
-     * Retrieves the detail for a single message. Simply supply the unique identifier for the required message.
-     *
-     * @param id The identifier of the message to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Message object
-     */
-    Observable<Message> getAsync(UUID id);
-
-    /**
-     * Retrieve an message.
-     * Retrieves the detail for a single message. Simply supply the unique identifier for the required message.
-     *
-     * @param id The identifier of the message to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Message object
-     */
-    Observable<ServiceResponse<Message>> getWithServiceResponseAsync(UUID id);
+    public Message get(UUID id) throws IOException, MailosaurException {
+    	return client.request("GET", "api/messages/" + id).parseAs(Message.class);
+    }
 
     /**
      * Delete an message.
@@ -72,175 +51,38 @@ public interface Messages {
      * @param id The identifier of the message to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void delete(UUID id);
-
-    /**
-     * Delete an message.
-     * Permanently deletes an message. This operation cannot be undone. Also deletes any attachments related to the message.
-     *
-     * @param id The identifier of the message to be deleted.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Void> deleteAsync(UUID id, final ServiceCallback<Void> serviceCallback);
-
-    /**
-     * Delete an message.
-     * Permanently deletes an message. This operation cannot be undone. Also deletes any attachments related to the message.
-     *
-     * @param id The identifier of the message to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<Void> deleteAsync(UUID id);
-
-    /**
-     * Delete an message.
-     * Permanently deletes an message. This operation cannot be undone. Also deletes any attachments related to the message.
-     *
-     * @param id The identifier of the message to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(UUID id);
-
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MessageListResult object if successful.
-     */
-    MessageListResult list(String server);
-
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<MessageListResult> listAsync(String server, final ServiceCallback<MessageListResult> serviceCallback);
-
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<MessageListResult> listAsync(String server);
-
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<ServiceResponse<MessageListResult>> listWithServiceResponseAsync(String server);
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MessageListResult object if successful.
-     */
-    MessageListResult list(String server, Integer page, Integer itemsPerPage);
-
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<MessageListResult> listAsync(String server, Integer page, Integer itemsPerPage, final ServiceCallback<MessageListResult> serviceCallback);
-
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<MessageListResult> listAsync(String server, Integer page, Integer itemsPerPage);
-
-    /**
-     * List all messages.
-     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<ServiceResponse<MessageListResult>> listWithServiceResponseAsync(String server, Integer page, Integer itemsPerPage);
-
+    public void delete(UUID id) throws MailosaurException {
+    	client.request("DELETE", "api/messages/" + id);
+    }
+    
     /**
      * Delete all messages.
      * Permanently deletes all messages held by the specified server. This operation cannot be undone. Also deletes any attachments related to each message.
      *
      * @param server The identifier of the server to be emptied.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteAll(String server);
+    public void deleteAll(String server) throws MailosaurException {
+    	HashMap<String, String> query = new HashMap<String, String>();
+    	query.put("server", server);
+    	client.request("DELETE", "api/messages", query);
+    }
 
     /**
-     * Delete all messages.
-     * Permanently deletes all messages held by the specified server. This operation cannot be undone. Also deletes any attachments related to each message.
+     * List all messages.
+     * Returns a list of your messages. The messages are returned sorted by received date, with the most recently-received messages appearing first.
      *
-     * @param server The identifier of the server to be emptied.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
+     * @param server The identifier of the server hosting the messages.
+     * @throws MailosaurException thrown if the request is rejected by server
+     * @throws IOException
+     * @return the MessageListResult object if successful. 
      */
-    ServiceFuture<Void> deleteAllAsync(String server, final ServiceCallback<Void> serviceCallback);
-
-    /**
-     * Delete all messages.
-     * Permanently deletes all messages held by the specified server. This operation cannot be undone. Also deletes any attachments related to each message.
-     *
-     * @param server The identifier of the server to be emptied.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<Void> deleteAllAsync(String server);
-
-    /**
-     * Delete all messages.
-     * Permanently deletes all messages held by the specified server. This operation cannot be undone. Also deletes any attachments related to each message.
-     *
-     * @param server The identifier of the server to be emptied.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<ServiceResponse<Void>> deleteAllWithServiceResponseAsync(String server);
+    public MessageListResult list(String server) throws IOException, MailosaurException {
+    	HashMap<String, String> query = new HashMap<String, String>();
+    	query.put("server", server);
+    	return client.request("GET", "api/messages", query).parseAs(MessageListResult.class);
+    }
 
     /**
      * Search for messages.
@@ -248,100 +90,15 @@ public interface Messages {
      *
      * @param server The identifier of the server hosting the messages.
      * @param criteria The search criteria to match results against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the MessageListResult object if successful.
      */
-    MessageListResult search(String server, SearchCriteria criteria);
-
-    /**
-     * Search for messages.
-     * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param criteria The search criteria to match results against.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<MessageListResult> searchAsync(String server, SearchCriteria criteria, final ServiceCallback<MessageListResult> serviceCallback);
-
-    /**
-     * Search for messages.
-     * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param criteria The search criteria to match results against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<MessageListResult> searchAsync(String server, SearchCriteria criteria);
-
-    /**
-     * Search for messages.
-     * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param criteria The search criteria to match results against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<ServiceResponse<MessageListResult>> searchWithServiceResponseAsync(String server, SearchCriteria criteria);
-    /**
-     * Search for messages.
-     * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param criteria The search criteria to match results against.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MessageListResult object if successful.
-     */
-    MessageListResult search(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage);
-
-    /**
-     * Search for messages.
-     * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param criteria The search criteria to match results against.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<MessageListResult> searchAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage, final ServiceCallback<MessageListResult> serviceCallback);
-
-    /**
-     * Search for messages.
-     * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param criteria The search criteria to match results against.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<MessageListResult> searchAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage);
-
-    /**
-     * Search for messages.
-     * Returns a list of messages matching the specified search criteria. The messages are returned sorted by received date, with the most recently-received messages appearing first.
-     *
-     * @param server The identifier of the server hosting the messages.
-     * @param criteria The search criteria to match results against.
-     * @param page Used in conjunction with `itemsperpage` to support pagination.
-     * @param itemsPerPage A limit on the number of results to be returned. Can be set between 1 and 1000 items, the default is 50.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MessageListResult object
-     */
-    Observable<ServiceResponse<MessageListResult>> searchWithServiceResponseAsync(String server, SearchCriteria criteria, Integer page, Integer itemsPerPage);
+    public MessageListResult search(String server, SearchCriteria criteria) throws IOException, MailosaurException {
+    	HashMap<String, String> query = new HashMap<String, String>();
+    	query.put("server", server);
+    	return client.request("POST", "api/messages/search", criteria, query).parseAs(MessageListResult.class);
+    }
 
     /**
      * Wait for a specific message.
@@ -349,45 +106,14 @@ public interface Messages {
      *
      * @param server The identifier of the server hosting the message.
      * @param criteria The search criteria to use in order to find a match.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws MailosaurException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @throws IOException
      * @return the Message object if successful.
      */
-    Message waitFor(String server, SearchCriteria criteria);
-
-    /**
-     * Wait for a specific message.
-     * Returns as soon as an message matching the specified search criteria is found.
-     *
-     * @param server The identifier of the server hosting the message.
-     * @param criteria The search criteria to use in order to find a match.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Message> waitForAsync(String server, SearchCriteria criteria, final ServiceCallback<Message> serviceCallback);
-
-    /**
-     * Wait for a specific message.
-     * Returns as soon as an message matching the specified search criteria is found.
-     *
-     * @param server The identifier of the server hosting the message.
-     * @param criteria The search criteria to use in order to find a match.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Message object
-     */
-    Observable<Message> waitForAsync(String server, SearchCriteria criteria);
-
-    /**
-     * Wait for a specific message.
-     * Returns as soon as an message matching the specified search criteria is found.
-     *
-     * @param server The identifier of the server hosting the message.
-     * @param criteria The search criteria to use in order to find a match.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Message object
-     */
-    Observable<ServiceResponse<Message>> waitForWithServiceResponseAsync(String server, SearchCriteria criteria);
+    public Message waitFor(String server, SearchCriteria criteria) throws IOException, MailosaurException {
+    	HashMap<String, String> query = new HashMap<String, String>();
+    	query.put("server", server);
+    	return client.request("POST", "api/messages/await", criteria, query).parseAs(Message.class);
+    }
 
 }
