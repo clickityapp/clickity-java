@@ -3,8 +3,6 @@ package com.mailosaur;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 
 import javax.mail.MessagingException;
 
@@ -90,10 +88,10 @@ public class ServersTest {
     		client.servers().create(options);
     		throw new IOException("Should have thrown MailosaurException");
     	} catch (MailosaurException e) {
-    		assertTrue(e.getMessage().startsWith("Status code 400"));
-    		assertEquals("UnknownError", e.mailosaurError().type());
-    		assertEquals(1, e.mailosaurError().messages().size());
-    		assertNotNull(e.mailosaurError().messages().get("name"));
+    		assertTrue(e.getMessage().startsWith("400 Bad Request"));
+//    		assertEquals("ValidationError", e.mailosaurError().type());
+//    		assertEquals(1, e.mailosaurError().messages().size());
+//    		assertNotNull(e.mailosaurError().messages().get("name"));
     	}
     }
 }

@@ -23,48 +23,10 @@ Add this dependency to your project's POM:
 You'll need to manually install the following JARs:
 
 * The Mailosaur JAR from https://github.com/mailosaur/mailosaur-java/releases/latest
-* Something else from https://
 
 ## Documentation and usage examples
 
 [Mailosaur's documentation](https://mailosaur.com/docs) includes all the information and usage examples you'll need.
-
-## Building
-
-1. Install [Node.js](https://nodejs.org/) (LTS)
-
-2. Install [AutoRest](https://github.com/Azure/autorest) using `npm`
-
-```
-# Depending on your configuration you may need to be elevated or root to run this. (on OSX/Linux use 'sudo')
-npm install -g autorest
-```
-
-3. Run the build script
-
-```
-./build.sh
-```
-
-### AutoRest Configuration
-
-This project uses [AutoRest](https://github.com/Azure/autorest), below is the configuration that the `autorest` command will automatically pick up.
-
-> see https://aka.ms/autorest
-
-```yaml
-input-file: https://next.mailosaur.com/swagger/latest/swagger.json
-```
-
-```yaml
-java:
-    output-folder: src/main/java/com/mailosaur
-    add-credentials: true
-    sync-methods: essential 
-    use-internal-contructors: true
-    override-client-name: MailosaurBaseClient
-    namespace: com.mailosaur
-```
 
 ## Running tests
 

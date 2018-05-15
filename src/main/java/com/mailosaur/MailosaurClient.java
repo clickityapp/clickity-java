@@ -21,6 +21,7 @@ import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.gson.GsonFactory;
+import com.mailosaur.models.MailosaurError;
 
 public class MailosaurClient {
 	final String API_KEY;
@@ -127,16 +128,30 @@ public class MailosaurClient {
     public HttpResponse request(String method, String url, Object content, HashMap<String, String> query) throws MailosaurException {
         IOException ex = null;
         HttpRequest request = null;
+        HttpResponse response = null;
+        
         // retry 3 times:
         for (int i = 0; i < 3; i++) {
             try {
                 request = buildRequest(method, url, content, query);
-                return request.execute();
+                response = request.execute();
+                
+                if (response.getStatusCode() != 200 &&
+            		response.getStatusCode() != 204) {
+                	String message = String.format("Operation returned an invalid status code '%s'", response.getStatusCode());
+                	MailosaurException mailosaurException = new MailosaurException(message);
+                	MailosaurError mailosaurError = response.parseAs(MailosaurError.class);
+            		mailosaurException.withMailosaurError(mailosaurError);
+            		throw mailosaurException;
+                }
+                
+                return response;
             } catch (IOException ioException) {
                 ex = ioException;
             }
         }
-        throw new MailosaurException("Unable to parse API response from " + request.getUrl() + " : " + ex.getMessage(), ex);
+        
+        throw new MailosaurException(ex.getMessage());
     }
     
     public ByteArrayOutputStream requestFile(String method, String path) throws MailosaurException, IOException {
@@ -145,35 +160,29 @@ public class MailosaurClient {
         return stream;
     }
 	
-	private HttpRequest buildRequest(String method, String path, Object content, Map<String, String> query) throws MailosaurException {
-        try {
-        	HttpRequest request;
-        	GenericUrl url = buildUrl(path, query);
-        	
-        	switch(method) {
-        		case "POST":
-        			request = (content != null) ?
-    						requestFactory.buildPostRequest(url, new JsonHttpContent(JSON_FACTORY, content)) :
-							requestFactory.buildPostRequest(url, new EmptyContent());
-        			break;
-        		case "PUT":
-        			request = requestFactory.buildPutRequest(url, new JsonHttpContent(JSON_FACTORY, content));
-        			break;
-        		case "DELETE":
-        			request = requestFactory.buildDeleteRequest(url);
-        			break;
-    			default:
-    				request = requestFactory.buildGetRequest(url);
-        	}
+	private HttpRequest buildRequest(String method, String path, Object content, Map<String, String> query) throws MailosaurException, IOException {
+		HttpRequest request;
+    	GenericUrl url = buildUrl(path, query);
+    	
+    	switch(method) {
+    		case "POST":
+    			request = (content != null) ?
+						requestFactory.buildPostRequest(url, new JsonHttpContent(JSON_FACTORY, content)) :
+						requestFactory.buildPostRequest(url, new EmptyContent());
+    			break;
+    		case "PUT":
+    			request = requestFactory.buildPutRequest(url, new JsonHttpContent(JSON_FACTORY, content));
+    			break;
+    		case "DELETE":
+    			request = requestFactory.buildDeleteRequest(url);
+    			break;
+			default:
+				request = requestFactory.buildGetRequest(url);
+    	}
 
-            request.setInterceptor(new BasicAuthentication(API_KEY, ""));
-            
-            return request;
-        } catch (UnsupportedEncodingException e) {
-            throw new MailosaurException("Unable to encode URL", e);
-        } catch (IOException e) {
-            throw new MailosaurException("Unable to build web request", e);
-        }
+        request.setInterceptor(new BasicAuthentication(API_KEY, ""));
+        
+        return request;
     }
 	
 	private String buildQueryString(final Map<String, String> map) throws UnsupportedEncodingException {
