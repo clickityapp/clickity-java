@@ -136,6 +136,38 @@ public class EmailsTest {
     	assertEquals(targetEmail.to().get(0).email(), results.get(0).to().get(0).email());
     	assertEquals(targetEmail.subject(), results.get(0).subject());
     }
+
+	@Test
+    public void testSearchMatchUnspecified() throws IOException, MailosaurException {
+    	MessageSummary targetEmail = emails.get(1);
+    	SearchCriteria criteria = new SearchCriteria();
+    	criteria.withSentTo(targetEmail.to().get(0).email());
+		criteria.withBody("this is a test");
+    	List<MessageSummary> results = client.messages().search(server, criteria).items();
+    	assertEquals(1, results.size());
+    }
+
+	@Test
+    public void testSearchMatchAll() throws IOException, MailosaurException {
+    	MessageSummary targetEmail = emails.get(1);
+    	SearchCriteria criteria = new SearchCriteria();
+    	criteria.withSentTo(targetEmail.to().get(0).email());
+		criteria.withBody("this is a test");
+		criteria.withMatch("all");
+    	List<MessageSummary> results = client.messages().search(server, criteria).items();
+    	assertEquals(1, results.size());
+    }
+
+	@Test
+    public void testSearchMatchAny() throws IOException, MailosaurException {
+    	MessageSummary targetEmail = emails.get(1);
+    	SearchCriteria criteria = new SearchCriteria();
+    	criteria.withSentTo(targetEmail.to().get(0).email());
+		criteria.withBody("this is a test");
+		criteria.withMatch("any");
+    	List<MessageSummary> results = client.messages().search(server, criteria).items();
+    	assertEquals(6, results.size());
+    }
     
     @Test
     public void testSpamAnalysis() throws IOException, MailosaurException {

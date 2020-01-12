@@ -25,6 +25,15 @@ public class SearchCriteria {
     private String body;
 
     /**
+     * If set to "ALL" (default), then only results that match all 
+     * specified criteria will be returned. If set to "ANY",
+     * results that match any of the specified criteria will be 
+     * returned.
+     */
+	@Key
+    private String match;
+
+    /**
      * Get the sentTo value.
      *
      * @return the sentTo value
@@ -81,6 +90,26 @@ public class SearchCriteria {
      */
     public SearchCriteria withBody(String body) {
         this.body = body;
+        return this;
+    }
+
+    /**
+     * Get the match value.
+     *
+     * @return the match value
+     */
+    public String match() {
+        return this.match;
+    }
+
+    /**
+     * Set the match value.
+     *
+     * @param match the match value to set
+     * @return the SearchCriteria object itself.
+     */
+    public SearchCriteria withMatch(String match) {
+        this.match = match;
         return this;
     }
 
